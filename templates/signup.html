@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Signup page{% endblock  %}
+
+{% block content %}
+{% with messages= get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+<div class="signup-container">
+    <form action="{{ url_for('signup') }}" method="POST" onsubmit="return verifyPassword()">
+        <h2>Sign up</h2>
+        <div class="input-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="firstname" placeholder="First name" required>
+            <input type="text" name="lastname" id="name" placeholder="Last name">
+        </div>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="input-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required oninput="checkPasswords()">
+            <p id="error-message" class="error-message" style="display: none;">Passwords does not match confirm-password. Please try again</p>
+        </div>
+        <button type="submit">Sign up</button>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    </form>
+</div>
+<script>
+    function checkPasswords() {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+        const errorMessage = document.getElementById("error-message")
+
+        if (password !== confirmPassword) {
+            errorMessage.style.display = "block";
+        } else {
+            errorMessage.style.display = "none";
+        }
+    }
+
+    function verifyPassword() {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+
+        if (password !== confirmPassword) {
+                window.alert("Passwords do not match. Please try again.");
+                    return false;
+        }
+                return true;
+    }
+</script>
+
+{% endblock  %}
